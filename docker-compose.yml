@@ -1,0 +1,25 @@
+version: '2'
+
+services:
+
+  balanser:
+    image: haproxy:latest
+    volumes:
+      - ./haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+      - ./haproxy:/run/haproxy
+    ports:
+      - "80:80"
+      - "8080:8080"
+    links:
+      - backend_1
+      - backend_2
+
+  backend_1:
+    image: nginx:stable
+    ports:
+      - "8001:80"
+
+  backend_2:
+    image: nginx:stable
+    ports:
+      - "8002:80"
